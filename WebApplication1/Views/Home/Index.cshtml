@@ -1,0 +1,247 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DtSearch</title>
+    <script src="~/script/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.1.119/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.119/styles/kendo.bootstrap-v4.min.css" />
+
+    <script src="https://kendo.cdn.telerik.com/2021.1.119/js/kendo.all.min.js"></script>
+
+    <base href="https://demos.telerik.com/kendo-ui/grid/editing-popup">
+    
+</head>
+<body>
+    <div>
+        <label for="indname"><b>Create Index</b></label><br />
+        <input type="text" id="indname" name="indexname" required>&emsp;
+        <input type="file" name="path" id="folpath"/><br><br>
+        <button onclick="myfun()">Create An Index</button>&emsp;<button onclick="myfun2()">Delete An Index</button>&emsp;           
+        <hr>
+    </div>
+   <div id="grid2"></div> 
+    <br>
+    <div id="YourFormId">
+        <label for="searchreq"><b>Search Request</b></label>
+        <br><br>
+        <input type="text" id="searchreq" name="searchreq" placeholder="search heare....">
+        <br><br><br>
+        <input type="radio" id="stemming" value="stemming" name="option" checked>
+        <label for="stemming">Stemming</label>&emsp;
+        <input type="radio" id="phonic" value="phonic" name="option">
+        <label for="phonic">Phonic</label>&emsp;
+        <input type="radio" id="fuzzy" value="fuzzy" name="option">
+        <label for="fuzzy">Fuzzy</label>
+        <br><br>
+        <button onclick="change4()">Search</button>
+        <br />
+       <div id="grid" style="padding-right:400px;"></div>
+    </div>
+    @*<div>
+        <input type="text" id="indexname" name="indexname" placeholder="typehere"/>
+        <label for="indexname">Index :</label>
+        <input type="file" name="filepath" id="filepath"/>
+        <label for="filepath">Selaect File :</label>
+        <button onclick="myfun7()">Update Index</button>
+    </div>*@
+    <script>
+        function myfun(e)
+        {
+            var x = document.getElementById("indname").value;
+            var y = document.getElementById("folpath").value;
+            var obj = {
+                indexname: x,
+                path: y,
+            };
+            $.ajax({
+                url: "http://localhost:54799/api/createindex",
+                type: "POST",
+                data: JSON.stringify(obj),
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    alert(result);
+                    document.getElementById("folpath").value = '';
+                    document.getElementById("indname").value = null;
+                    location.reload();
+                }
+            });
+        }
+    
+        function change4() {
+            var x = document.getElementById("searchreq").value;
+            var eval = document.getElementsByName('option');
+            for (i = 0; i < eval.length; i++) {
+                if (eval[i].checked) {
+                    eval = eval[i].value;
+                }
+            }
+            if (x != "") {
+                $(document).ready(function () {
+                    $("#grid").kendoGrid({
+                        dataSource: {
+                            type: "json",
+                            transport: {
+                                read: "http://localhost:54799/api/search?find=" + x + "&option=" + eval,
+                            },
+                            pageSize: 3,
+                            serverPaging: true,
+                            serverFiltering: true,
+                            serverSorting: true,
+                            scrollable: true
+                        },
+                        height: 550,
+                        columns: [{ field: "DisplayName", title: "File Name" },
+                            { field: "FileName", title: "File Path"},
+                            { field: "HitCount", title: "Hit Count" },
+                            { field: "Title", title: "Content", template: "#=Title#" }
+                        ]
+                    });
+                });
+
+            }
+        }
+
+        function myfun2() {
+            var x = document.getElementById("indname").value;
+            $.ajax({
+                url: "http://localhost:54799/api/deleteindex?txt=" + x,
+                type: "Delete",
+                success: function (result) {
+                    alert(result);
+                    document.getElementById("indname").value = null;
+                }
+            });
+        }
+            $(document).ready(function () {
+                dataSource = new kendo.data.DataSource({
+                    transport: {
+                        read: {
+                            url: "http://localhost:54799/api/indices",
+                            dataType: "json"
+                        },
+                        //update: {
+                        //    url: crudServiceBaseUrl + "/updaterecord",
+                        //    dataType: "json",
+                        //    type: "PUT",
+                        //    complete: function (e) {
+                        //        $("#grid").data("kendoGrid").dataSource.read();
+                        //        $("#notification").kendoNotification({
+                        //            position: {
+                        //                top: 30
+                        //            },
+                        //            autoHideAfter: 3000
+                        //        });
+                        //        $("#notification").getKendoNotification().show("Succesfully Updated");
+                        //    }
+                        //},
+                        destroy: {
+                            url: "http://localhost:54799/api/deleteindex",
+                            dataType: "json",
+                            type: "DELETE",
+                            complete: function (e) {
+                                $("#grid").data("kendoGrid").dataSource.read();
+                                $("#notification").kendoNotification({
+                                    position: {
+                                        top: 30
+                                    },
+                                    autoHideAfter: 3000
+                                });
+                                $("#notification").getKendoNotification().show("Succesfully Deleted");
+                            }
+                        },
+                        //create: {
+                        //    url: crudServiceBaseUrl + "/addmember",
+                        //    dataType: "json",
+                        //    type: "POST",
+                        //    complete: function (e) {
+                        //        if (e.status == 200) {
+                        //            $("#grid").data("kendoGrid").dataSource.read();
+                        //            $("#notification").kendoNotification({
+                        //                position: {
+                        //                    top: 30
+                        //                },
+                        //                autoHideAfter: 3000
+                        //            });
+                        //            $("#notification").getKendoNotification().show("Succesfully Created/Inserted Record");
+                        //        }
+                        //        else {
+                        //            //$("#grid").data("kendoGrid").dataSource.read();
+                        //            $("#notification").kendoNotification({
+                        //                position: {
+                        //                    top: 30
+                        //                },
+                        //                autoHideAfter: 3000
+                        //            });
+                        //            $("#notification").getKendoNotification().show("Failed ....Check your connection");
+                        //        }
+                        //    }
+                        //},
+                        parameterMap: function (options, operation) {
+                            if (operation !== "read" && options.models) {
+                                return { models: JSON.stringify(options.models) };
+                            }
+
+                        }
+                    },
+
+                    batch: true,
+                    pageSize: 1,
+                    schema: {
+                        model: {
+                            id: "indexname",
+                            fields: {
+                                indexname: { editable: false }
+                            }
+                        }
+                    }
+                });
+
+                $("#grid2").kendoGrid({
+                    dataSource: dataSource,
+                    pageable: true,
+                    scrollable: true,
+                    height: 100,
+                    columns: [
+                        { field: "indexname", title: "Index" },
+                        { command: ["destroy"], width: "250px" }],
+                    editable: "popup"
+                });
+            });
+
+            function myfun7()
+            {
+                var x = document.getElementById("indexname").value;
+                var y = document.getElementById("filepath").value;
+                var obj = {
+                    indexname: x,
+                    path: y,
+                };
+                $.ajax({
+                    url: "http://localhost:54799/api/updateindexfile",
+                    type: "PUT",
+                    data: JSON.stringify(obj),
+                    dataType: 'json',
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        alert(result);
+                        document.getElementById("indexname").value = '';
+                        document.getElementById("filepath").value = null;
+                        location.reload();
+                    }
+                });
+            }
+    </script>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 14 for Web
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAL", "BAL\BAL.csproj", "{9E794E4A-5031-4323-91EF-33C2287E849A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{C9A4E3A2-9014-4FE4-B173-4D484318A414}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "WebApplication1\UI.csproj", "{52A1237F-61E8-48BC-8E04-ADDBBAA57025}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9E794E4A-5031-4323-91EF-33C2287E849A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E794E4A-5031-4323-91EF-33C2287E849A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E794E4A-5031-4323-91EF-33C2287E849A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E794E4A-5031-4323-91EF-33C2287E849A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9A4E3A2-9014-4FE4-B173-4D484318A414}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9A4E3A2-9014-4FE4-B173-4D484318A414}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9A4E3A2-9014-4FE4-B173-4D484318A414}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9A4E3A2-9014-4FE4-B173-4D484318A414}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52A1237F-61E8-48BC-8E04-ADDBBAA57025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52A1237F-61E8-48BC-8E04-ADDBBAA57025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52A1237F-61E8-48BC-8E04-ADDBBAA57025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52A1237F-61E8-48BC-8E04-ADDBBAA57025}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

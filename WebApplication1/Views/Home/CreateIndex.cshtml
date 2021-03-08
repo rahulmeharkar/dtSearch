@@ -1,0 +1,42 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CreateIndex</title>
+    <script src="~/script/jquery.min.js"></script>
+</head>
+<body>
+    <div>
+        <input type="text" id="indname">
+        <input type="file" id="folpath" />
+        <button onclick="myfun()">Create Index</button>
+    </div>
+    <script>
+        function myfun()
+        {
+            var x = document.getElementById("indname").value;
+            var y = document.getElementById("folpath").value;
+            var obj = {
+                indexname: x,
+                doc: y,
+            };
+            $.ajax({
+                url: "/Home/CreateIndex",
+                type: "POST",
+                data: JSON.stringify(obj),
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    alert(result);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
